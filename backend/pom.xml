@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ===== Spring Boot Parent ===== -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.5</version>
+        <relativePath/>
+    </parent>
+
+    <!-- ===== Project Coordinates ===== -->
+    <groupId>com.notif</groupId>
+    <artifactId>NotificationSystem</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>NotificationSystem</name>
+    <description>Kafka-driven notification microservice</description>
+
+    <!-- ===== Java Version ===== -->
+    <properties>
+        <java.version>21</java.version>
+    </properties>
+
+    <!-- ===== Dependencies ===== -->
+    <dependencies>
+
+        <!-- Web: REST controllers, embedded Tomcat -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- JPA: Hibernate ORM + DataSource auto-config -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!-- Redis: StringRedisTemplate + connection pool -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!-- Kafka: KafkaTemplate + @KafkaListener support -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+
+        <!-- Actuator: /actuator/health endpoint -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- Lombok: @Data, @Builder, @Slf4j — reduces boilerplate -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- PostgreSQL JDBC driver (runtime only — JPA uses it under the hood) -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Jackson: JSON serialization/deserialization for Kafka payloads -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <!-- Brevo (ex-Sendinblue): transactional email API client -->
+        <dependency>
+            <groupId>com.sendinblue</groupId>
+            <artifactId>sib-api-v3-sdk</artifactId>
+            <version>7.0.0</version>
+        </dependency>
+
+        <!-- Twilio: SMS sending SDK -->
+        <dependency>
+            <groupId>com.twilio.sdk</groupId>
+            <artifactId>twilio</artifactId>
+            <version>9.14.1</version>
+        </dependency>
+
+        <!-- Test: JUnit 5 + Spring Boot test slice support -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <!-- ===== Build ===== -->
+    <build>
+        <plugins>
+            <!-- Packages the app as a fat JAR (includes all deps) -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- Exclude Lombok from the final JAR — only needed at compile time -->
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

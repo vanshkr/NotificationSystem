@@ -1,0 +1,64 @@
+spring:
+
+  # --- PostgreSQL ---
+  # Spring Boot uses these to build the DataSource (JDBC connection pool).
+  # If DB_URL is not set, the app will crash on startup
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  # --- JPA / Hibernate ---
+  jpa:
+    hibernate:
+      # 'none' = we manage the schema ourselves via schema.sql.
+      # Never use 'create-drop' in production — it wipes the table on restart.
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  # --- Kafka ---
+  kafka:
+    # Falls back to localhost:9092 if env var not set (useful for local dev once Docker is up)
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: notif-group          # All consumers in the same group share partition load
+      auto-offset-reset: earliest    # On first start, read from the beginning of the topic
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+  # --- Redis ---
+  data:
+    redis:
+      url: ${REDIS_URL:redis://localhost:6379}
+
+# --- Embedded server ---
+server:
+  port: 8080
+
+# --- Actuator ---
+# Exposes /actuator/health — used by Render.com / Kubernetes for liveness checks.
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+
+# --- Brevo (Email) ---
+brevo:
+  api-key: ${BREVO_API_KEY}
+
+# --- Twilio (SMS) ---
+twilio:
+  account-sid: ${TWILIO_ACCOUNT_SID}
+  auth-token: ${TWILIO_AUTH_TOKEN}
+  from-number: ${TWILIO_FROM_NUMBER}

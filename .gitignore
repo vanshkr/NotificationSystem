@@ -1,0 +1,21 @@
+# Environment secrets — never commit
+.env
+
+# Maven build output
+target/
+*.class
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# Node / frontend
+node_modules/
+dist/
+
+# OS
+.DS_Store
+Thumbs.db
