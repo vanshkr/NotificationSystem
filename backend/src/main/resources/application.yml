@@ -16,9 +16,15 @@ spring:
       # Never use 'create-drop' in production — it wipes the table on restart.
       ddl-auto: none
     show-sql: true
+    defer-datasource-initialization: true
     properties:
       hibernate:
         format_sql: true
+
+  sql:
+    init:
+      mode: always
+
 
   # --- Kafka ---
   kafka:
