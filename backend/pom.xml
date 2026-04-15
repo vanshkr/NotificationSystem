@@ -77,14 +77,6 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
-
-        <!-- Brevo (ex-Sendinblue): transactional email API client -->
-        <dependency>
-            <groupId>com.sendinblue</groupId>
-            <artifactId>sib-api-v3-sdk</artifactId>
-            <version>7.0.0</version>
-        </dependency>
-
         <!-- Twilio: SMS sending SDK -->
         <dependency>
             <groupId>com.twilio.sdk</groupId>

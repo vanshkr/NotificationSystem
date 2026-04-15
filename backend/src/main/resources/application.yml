@@ -62,7 +62,8 @@ management:
 # --- Brevo (Email) ---
 brevo:
   api-key: ${BREVO_API_KEY}
-
+  sender-email: ${BREVO_SENDER_EMAIL}
+  sender-name: heybabysystem
 # --- Twilio (SMS) ---
 twilio:
   account-sid: ${TWILIO_ACCOUNT_SID}

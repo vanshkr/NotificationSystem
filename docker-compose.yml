@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+
+  # ── Zookeeper ──────────────────────────────────────────────
+  # Kafka requires Zookeeper to manage broker metadata and leader election.
+  # Without it, Kafka won't start.
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 22181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "22181:22181"
+
+  # ── Kafka ───────────────────────────────────────────────────
+  # Our message broker. Spring Boot producer writes here,
+  # consumer reads from here.
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:22181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+
+  # ── PostgreSQL ──────────────────────────────────────────────
+  # Stores every notification attempt in the delivery_log table.
+  # Credentials here match what you'll put in .env later.
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: notifdb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # ── Redis ───────────────────────────────────────────────────
+  # Used for deduplication — stores eventId keys with 24h TTL.
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:
