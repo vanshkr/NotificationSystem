@@ -1,6 +1,8 @@
 package com.notif.repository;
 
 import com.notif.model.DeliveryLog;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -25,5 +27,9 @@ public interface DeliveryLogRepository extends JpaRepository<DeliveryLog, Long> 
     // Used for "today's notifications" stat
     @Query("SELECT COUNT(d) FROM DeliveryLog d WHERE d.createdAt >= :since")
     long countSince(LocalDateTime since);
+
+    long countByStatusAndCreatedAtGreaterThanEqual(String status, LocalDateTime since);
+
+    Page<DeliveryLog> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
 }
